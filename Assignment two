@@ -104,3 +104,28 @@ from Person.CountryRegion as pcr
 inner join Person.StateProvince as psp
 on pcr.CountryRegionCode = psp.CountryRegionCode
 where pcr.name in ('Germany','Canada')
+
+        Using Northwnd Database: (Use aliases for all the Joins)
+⦁	List all Products that has been sold at least once in last 25 years.
+select od.productID
+from dbo.Products as p 
+inner join dbo.OrderDetails as od
+on p.ProductID = od.ProductID
+inner join dbo.orders as o
+on o.OrderID = od.OrderID
+   where o.OrderDate >= '19950401'
+⦁	List top 5 locations (Zip Code) where the products sold most.
+select top 5 shippostalcode, sum(Quantity)
+from dbo.orders as o
+inner join dbo.OrderDetails as od
+on o.OrderID = od.OrderID
+group by shippostalcode
+Order by sum(Quantity) desc
+⦁	List top 5 locations (Zip Code) where the products sold most in last 20 years.
+select top 5 shippostalcode, sum(Quantity)
+from dbo.orders as o
+inner join dbo.OrderDetails as od
+on o.OrderID = od.OrderID
+where o.OrderDate >= '19950401'
+group by shippostalcode
+Order by sum(Quantity) desc
