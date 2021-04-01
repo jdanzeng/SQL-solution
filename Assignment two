@@ -1,0 +1,106 @@
+Answer following questions
+⦁	What is a result set?
+with result set clause can display a result set of a stored procedure by changing the names and data types of the returning result set.
+⦁	What is the difference between Union and Union All?
+UNION ALL keeps all of the records from each of the original data sets, UNION removes any duplicate records. 
+⦁	What are the other Set Operators SQL Server has?
+UNION, UNION ALL, INTERSECT, EXCEPT
+⦁	What is the difference between Union and Join?
+ joins combine data into new columns, Unions combine data into new rows
+⦁	What is the difference between INNER JOIN and FULL JOIN?
+Inner join returns only the matching rows between both the tables. Full Join  returns all rows from both the tables
+⦁	What is difference between left join and outer join
+Left Outer Join: Returns all the rows from the LEFT table and matching records between both the tables. Full Outer Join: It combines the result of the Left Outer Join and Right Outer Join
+⦁	What is cross join?
+Cross join selects the all the rows from the first table and all the rows from second table 
+⦁	What is the difference between WHERE clause and HAVING clause?
+A WHERE clause is used is filter records from a result. A HAVING clause is used to filter values from a group
+⦁	Can there be multiple group by columns?
+A GROUP BY clause can contain two or more columns
+Write queries for following scenarios
+⦁	How many products can you find in the Production.Product table?
+SELECT count(ProductID )
+from Production.Product 
+
+⦁	Write a query that retrieves the number of products in the Production.Product table that are included in a subcategory. The rows that have NULL in column ProductSubcategoryID are considered to not be a part of any subcategory.
+
+SELECT count(ProductID )
+from Production.Product as pp
+inner join Production.ProductCategory as ppc
+on pp.ProductSubcategoryID = ppc.ProductCategoryID 
+
+⦁	How many Products reside in each SubCategory? Write a query to display the results with the following titles.
+ProductSubcategoryID CountedProducts
+-------------------- ---------------
+
+SELECT ProductSubcategoryID, count(ProductSubcategoryID) as countedproducts 
+from Production.Product
+group by ProductSubcategoryID  
+
+⦁	How many products that do not have a product subcategory. 
+
+
+⦁	Write a query to list the summary of products in the Production.ProductInventory table.
+
+select * from Production.ProductInventory 
+⦁	 Write a query to list the summary of products in the Production.ProductInventory table and LocationID set to 40 and limit the result to include just summarized quantities less than 100.
+              ProductID    TheSum
+-----------        ----------
+select ProductID, sum(Quantity) as Thesum 
+from Production.ProductInventory 
+where LocationID = 40 and Quantity <100
+group by ProductID
+⦁	Write a query to list the summary of products with the shelf information in the Production.ProductInventory table and LocationID set to 40 and limit the result to include just summarized quantities less than 100
+Shelf      ProductID    TheSum
+---------- -----------        -----------
+select shelf,ProductID, sum(Quantity) as Thesum 
+from Production.ProductInventory 
+where LocationID = 40 and Quantity <100
+group by shelf, ProductID
+⦁	Write the query to list the average quantity for products where column LocationID has the value of 10 from the table Production.ProductInventory table.
+
+select ProductID, AVG(Quantity) 
+from Production.ProductInventory 
+where LocationID = 10 
+group by ProductID
+
+⦁	Write query  to see the average quantity  of  products by shelf  from the table Production.ProductInventory
+ProductID   Shelf      TheAvg
+----------- ---------- -----------
+select ProductID, Shelf, AVG(Quantity) TheAvg
+from Production.ProductInventory 
+group by shelf, ProductID
+
+⦁	Write query  to see the average quantity  of  products by shelf excluding rows that has the value of N/A in the column Shelf from the table Production.ProductInventory
+ProductID   Shelf      TheAvg
+----------- ---------- -----------
+select ProductID, Shelf, AVG(Quantity) TheAvg
+from Production.ProductInventory
+where shelf not like 'N/A '
+group by shelf, ProductID
+
+⦁	List the members (rows) and average list price in the Production.Product table. This should be grouped independently over the Color and the Class column. Exclude the rows where Color or Class are null.
+Color           	Class 	TheCount   	 AvgPrice
+--------------	- ----- 	----------- 	---------------------
+select color,class, count(productid) TheCount, AVG(listprice) AvgPrice
+from Production.Product
+group by color,class
+Joins:
+⦁	  Write a query that lists the country and province names from person. CountryRegion and person. StateProvince tables. Join them and produce a result set similar to the following. 
+
+Country                        Province
+---------                          ----------------------
+select pcr.name as Country, psp.name as Province
+from Person.CountryRegion as pcr
+inner join Person.StateProvince as psp
+on pcr.CountryRegionCode = psp.CountryRegionCode
+
+⦁	Write a query that lists the country and province names from person. CountryRegion and person. StateProvince tables and list the countries filter them by Germany and Canada. Join them and produce a result set similar to the following.
+
+Country                        Province
+---------                          ----------------------
+select pcr.name as Country, psp.name as Province
+from Person.CountryRegion as pcr
+inner join Person.StateProvince as psp
+on pcr.CountryRegionCode = psp.CountryRegionCode
+where pcr.name in ('Germany','Canada')
