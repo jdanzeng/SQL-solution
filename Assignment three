@@ -91,4 +91,5 @@ select deptid from employee
 group by deptid having count(*) = (select top 1 count(*) from employee group by deptid order by count(*) desc)
 13.	Find top 3 employees (salary based) in every department. Result should have deptname, empid, salary sorted by deptname and then employee with high to low salary.
 select top 3 deptname,empid,salary from employee e 
-join dep d on e.deptid=d.deptid order by salary,deptname,empid desc
+join dep d on e.deptid=d.deptid 
+order by salary,deptname,empid Desc
